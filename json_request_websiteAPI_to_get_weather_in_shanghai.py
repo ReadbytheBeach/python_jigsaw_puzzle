@@ -21,7 +21,7 @@ urllib3.disable_warnings() # 不安全请求警告：正在发出未验证的HTT
 # 公司电脑，sys.argv[] 都被屏蔽了
 
 location = 'Shanghai'
-appid = 'ae33f3ffc8acb9fcc9fab130793dba53' 
+appid = 'xxxxxxxxxxxxxxxxxxxxxx'   # 30bits key
 
 # Download the json data from OpenWeatherMap.org's API
 # https://api.openweathermap.org/data/2.5/weather?q=Shanghai&appid=ae33f3ffc8acb9fcc9fab130793dba53  # try in the website, can work
