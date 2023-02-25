@@ -14,14 +14,14 @@
             阅读内容，从字典中取出需要的键－值（天气信息）
 '''
 
-import json, requests, sys
+import json, requests, datetime
 import urllib3
 urllib3.disable_warnings() # 不安全请求警告：正在发出未验证的HTTPS请求。强烈建议添加证书验证。方法：去除urllib3 warming 警告---urllib3.disable_warnings() 
 
 # 公司电脑，sys.argv[] 都被屏蔽了
 
 location = 'Shanghai'
-appid = 'xxxxxxxxxxxxxxxxxxxxxx'   # 30bits key
+appid = 'ae33f3ffc8acb9fcc9fab130793dba53'   # 30bits key in website
 
 # Download the json data from OpenWeatherMap.org's API
 # https://api.openweathermap.org/data/2.5/weather?q=Shanghai&appid=ae33f3ffc8acb9fcc9fab130793dba53  # try in the website, can work
@@ -38,5 +38,7 @@ weatherData = json.loads(response.text)
 # print(weatherData) 
 w = weatherData # 为了少打一些字
 # print(type(w))
+dt =datetime.datetime.now()
+print('Now:   %s-%s_%s, %s:%s:%s '%(dt.year, dt.month, dt.day, dt.hour, dt.minute, dt.second))
 print('Current weather in %s' %(location))
 print(w['weather'][0]['main'], '-', w['weather'][0]['description'])
