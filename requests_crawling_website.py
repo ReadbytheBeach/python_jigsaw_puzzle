@@ -6,7 +6,8 @@ urllib3.disable_warnings() # 不安全请求警告：正在发出未验证的HTT
 res = requests.get('https://automatetheboringstuff.com/files/rj.txt', verify=False)
 res.raise_for_status()
 print(type(res))
-print(len(res.text))
+# 查一下爬取文件的大小
+print(len(res.text)) 
 # print(res.text[:1000])
 
 # 从网上爬取文章
