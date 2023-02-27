@@ -18,6 +18,8 @@ def getText(filename):
     return '\n'.join(fullText)  # 段与段之间以回车连接
     # return '\n\n'.join(fullText) # 段与段之间加空行
 
+
+
 file_name = 'HFL118 Sales Pitch.docx'
 print(getText(file_name))
 
