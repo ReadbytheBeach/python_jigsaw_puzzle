@@ -40,8 +40,8 @@ def login():
     user_name = 'Heinekenblue@163.com'   #之后要用input方式来屏蔽掉
     user_pswd = 'QSCesz01'  #之后要用input方式来屏蔽掉
     sent_addr = 'jie.xun@continental-corporation.com'
-    sent_topic = 'use python auto open the mail-box, write the content and send out'
-    letter_content = 'what amazing for using selenium, python. '
+    sent_topic = 'show me the topic'
+    letter_content = 'what amazing for using selenium, python! '
     
     # 163登陆框是使用iframe进行嵌套的，所以需要先切换到该iframe
     # HTML原代码： <iframe name="" frameborder="0" id="x-URS-iframe1677894621840.8105"......</iframe>
@@ -95,7 +95,7 @@ def login():
 
     driver.implicitly_wait(5)
 
-    time.sleep(3)
+    time.sleep(1)
 
     # 写入邮箱
     '''   
@@ -110,7 +110,7 @@ def login():
     '''
     rec_elem = driver.find_element(by=By.XPATH, value = '//input[@class="nui-editableAddr-ipt"]')
     rec_elem.send_keys(sent_addr) 
-    time.sleep(1)
+    time.sleep(5)
 
     '''
     因为iframe的id是动态的，所以我们只能通过其他方法定位iframe，iframe的定位方法有：id，name，index等，这里我用name元素定位iframe
@@ -118,13 +118,14 @@ def login():
     '''
 
     # 写入主题
-    # driver.switch_to.frame(0) 
-    # driver.switch_to.default_content()
-    
+    driver.switch_to.default_content()
     # # sub_elem = driver.find_element(by=By.XPATH, value = '//div[@class="bz0"]/div/input[@class="nui-ipt-input"]')
     # sub_elem = driver.find_element(by=By.CLASS_NAME, value='nui-ipt-input')
-    sub_elem = driver.find_elements(by=By.CSS_SELECTOR,value='div div div div section header div input')
-    sub_elem.clear()
+    time.sleep(3)
+    sub_elem = driver.find_element(by=By.CSS_SELECTOR,value='div div div div section header div div div div input')
+    # sub_elem = driver.find_element(by=By.XPATH, value = '//div[@class="bz0"]/div/input[@class="nui-ipt-input"]')
+    # print('sub_elem= ',sub_elem)
+    time.sleep(1)
     sub_elem.send_keys(sent_topic) 
     time.sleep(1)
 
@@ -148,13 +149,18 @@ def login():
     若是搜索到多个，则数清楚目标元素的次序，通过列表下标取到该元素。
     '''
     # 不用从’body'开始，从下一级'div'算起
+    '''
+    find_element: 只返回查找到的第一个元素，如果没有查找到元素，则返回NoSuchElementException的异常
+    find_elements: 返回一个包含所有元素的列表，如果没有元素，则返回空列表
+    '''
     send_elem = driver.find_elements(by=By.CSS_SELECTOR,value='div div div div footer div span')[0]
+    print('send_elem =', send_elem)
     send_elem.click()
-    time.sleep(3)
+    time.sleep(1)
 
     cur_cookies = driver.get_cookies()[0]
     driver.save_screenshot('screenshot_send_letter.png')  # 页面保存在 D:\03_program\python
-    time.sleep(3)
+    time.sleep(1)
 
 
 
