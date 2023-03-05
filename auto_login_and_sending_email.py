@@ -28,7 +28,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By  # 书上没有的代码
 from selenium.webdriver.common.keys import Keys
 
-def login():
+def login(pswd):
     # acount_num = input('请输入账号:\n')
     # passwd_str = input('请输入密码:\n')
     options = webdriver.EdgeOptions()  # 可能会有问题
@@ -38,7 +38,7 @@ def login():
     driver.maximize_window()
     time.sleep(5) # 5S后才自动关闭
     user_name = 'Heinekenblue@163.com'   #之后要用input方式来屏蔽掉
-    user_pswd = 'QSCesz01'  #之后要用input方式来屏蔽掉
+    user_pswd = pswd  #之后要用input方式来屏蔽掉
     sent_addr = 'jie.xun@continental-corporation.com'
     sent_topic = 'show me the topic'
     letter_content = 'what amazing for using selenium, python! '
@@ -117,15 +117,9 @@ def login():
     
     '''
 
-    # 写入主题
-    driver.switch_to.default_content()
-    # # sub_elem = driver.find_element(by=By.XPATH, value = '//div[@class="bz0"]/div/input[@class="nui-ipt-input"]')
-    # sub_elem = driver.find_element(by=By.CLASS_NAME, value='nui-ipt-input')
-    time.sleep(3)
-    sub_elem = driver.find_element(by=By.CSS_SELECTOR,value='div div div div section header div div div div input')
-    # sub_elem = driver.find_element(by=By.XPATH, value = '//div[@class="bz0"]/div/input[@class="nui-ipt-input"]')
-    # print('sub_elem= ',sub_elem)
-    time.sleep(1)
+    # 写入主题 
+    # 方案 ---使用模糊匹配的方法
+    sub_elem = driver.find_element(by=By.XPATH, value = '//div[contains(@aria-label, "邮件主题输入框，请输入邮件主题")]/input')
     sub_elem.send_keys(sent_topic) 
     time.sleep(1)
 
@@ -165,94 +159,11 @@ def login():
 
 
 if __name__ == '__main__':
-    login()
-
-
-"""
-import sys
-import time
-from selenium import webdriver
-
-
-def login():
-    # acount_num = input('请输入账号:\n')
-    # passwd_str = input('请输入密码:\n')
-    driver = webdriver.Chrome(executable_path='C:\chromedriver\chromedriver.exe')
-    url = 'http://mail.163.com/'
-    driver.get(url)
-    driver.maximize_window()
+    print ('Please input your password here: ')
+    email_pswd = input()
     time.sleep(5)
-    #acount_num = 'xxx@163.com'
-    #passwd_str = 'xxx'
+    if email_pswd:
+        login(email_pswd)
+    else:
+        print('wrong password')
 
-    # 163登陆框是使用iframe进行嵌套的，所以需要先切换到该iframe
-    driver.switch_to.frame('x-URS-iframe')
-
-    acount = driver.find_element_by_name('email')
-    acount.clear()
-    acount.send_keys(acount_num)
-
-    passwd = driver.find_element_by_name('password')
-    passwd.clear()
-    passwd.send_keys(passwd_str)
-
-    time.sleep(3)
-    click_button = driver.find_element_by_id('dologin')
-    click_button.click()
-    time.sleep(3)
-    cur_cookies = driver.get_cookies()[0]
-    driver.save_screenshot('screenshot.png')
-
-    time.sleep(5)
-
-
-    #点击“写信”，此时需要切回主文档！否则selenium无法定位元素，或者cannot access dead object
-
-    browser.switch_to_default_content()
-
-    write_elem = browser.find_elements_by_css_selector('div nav div ul li')[1]
-
-    write_elem.click()
-
-    '''
-    填写收件人邮箱，我习惯用css选择器，其实我觉得思维不难，最难的是元素的定位！
-    163邮箱大量采用动态id，使得元素很难定位，我的做法是用css选择器，
-    编辑一个表达式，在Chrome中搜索目标元素，若是只搜索到1个，那这个表达式可以，
-    若是搜索到多个，则数清楚目标元素的次序，通过列表下标取到该元素。
-    '''
-
-    rec_elem=browser.find_element_by_css_selector('header div div div div div input')
-
-    rec_elem.send_keys('xxxx@vip.qq.com')  #这里若是想从命令行获取，则使用sys.argv[1]
-
-    #填写主题，主题的获取即是通过遍历符合css表达式的元素列表，通过下标获得
-
-    sub_elem=browser.find_elements_by_css_selector('div section header div div div input')[2]
-
-    sub_elem.send_keys('Python3 auto send email')
-    '''
-    进入正文框架 ，这里需要再次切入frame，否则无法定位元素，
-    因为该frame无id和name属性，故使用webelement进行定位
-    '''
-
-    browser.switch_to.frame(browser.find_element_by_css_selector('.APP-editor-iframe'))
-
-    #写正文，若是从命令行获取则：letter_ele.send_keys(sys.argv[3])
-
-    letter_ele=browser.find_element_by_css_selector('body')
-
-    letter_ele.send_keys('This is body')
-
-    #切回主文档
-
-    browser.switch_to.default_content()
-
-    #点击发送
-
-    send_ele=browser.find_elements_by_css_selector('header div div div[role="button"]')[0]
-
-    send_ele.click()
-
-if __name__ == '__main__':
-    login()
-"""
