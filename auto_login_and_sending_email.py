@@ -118,7 +118,11 @@ def login(pswd):
     '''
 
     # 写入主题 
-    # 方案 ---使用模糊匹配的方法
+    '''
+    存放网页上的代码：
+
+    '''
+    # 方案 ---因为input后的代码是每次登入都会更新的iFrame方式，所以使用模糊匹配的方法, 并且使用了两级HTML合并，上一层的div 内容 和 下一层的input
     sub_elem = driver.find_element(by=By.XPATH, value = '//div[contains(@aria-label, "邮件主题输入框，请输入邮件主题")]/input')
     sub_elem.send_keys(sent_topic) 
     time.sleep(1)
@@ -150,7 +154,7 @@ def login(pswd):
     send_elem = driver.find_elements(by=By.CSS_SELECTOR,value='div div div div footer div span')[0]
     print('send_elem =', send_elem)
     send_elem.click()
-    time.sleep(1)
+    time.sleep(3)
 
     cur_cookies = driver.get_cookies()[0]
     driver.save_screenshot('screenshot_send_letter.png')  # 页面保存在 D:\03_program\python
@@ -161,7 +165,7 @@ def login(pswd):
 if __name__ == '__main__':
     print ('Please input your password here: ')
     email_pswd = input()
-    time.sleep(5)
+
     if email_pswd:
         login(email_pswd)
     else:
