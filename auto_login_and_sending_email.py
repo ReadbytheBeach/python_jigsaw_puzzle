@@ -9,8 +9,8 @@
     # 通过命令行接收电子邮件地址和文本字符串
         # receive_addr = 'jie.xun@continental-corporation.com'
         # mail_content = 'chi fan la!'
-        # 发件人邮箱： jie.ziqiangbuxi@gmail.com， 密码采用每次启动程序input() 方式---安全
-        # 发件人邮箱链接地址： https://accounts.google.com/signin/v2/challenge/pwd?service=mail&passive=1209600&osid=1&continue=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&followup=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&emr=1&ifkv=AWnogHdotb3y8eyFkdBg7idUHPBpZIevy96v5V0hNSxgCEBNwlKH1BZUnbq813tcmQeBH6oDQa9TSw&flowName=GlifWebSignIn&flowEntry=ServiceLogin&cid=1&navigationDirection=forward&TL=ALbfvL0HuW_B4nGeAGqhyQIRqIQiTReZUmqsiMbDNnpiRC2Oh4LkMsWB41Lps0Cx
+        # 发件人邮箱： Heinekenblue@163.com， 密码采用每次启动程序input() 方式---安全
+        # 发件人邮箱链接地址：https://mail.163.com/?msg=authfail#return
    # 利用selenium自动登入到自己的电子邮箱账号。
         # 我用的是Microsoft Edge, 打开的是Google Gmail(但没有使用Chrome)
         # pswd = input()
@@ -21,26 +21,6 @@
         # 在邮箱位置：
         # 在内容位置：
         # 发送：
-
-
-# from selenium import webdriver
-# from selenium.webdriver.common.by import By  # 书上没有的代码
-# from selenium.webdriver.common.keys import Keys
-
-# options = webdriver.EdgeOptions()
-# driver = webdriver.Edge(options=options)
-
-# pswd = 'QSCesz01#'
-# driver.get('https://accounts.google.com/signin/v2/challenge/pwd?service=mail&passive=1209600&osid=1&continue=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&followup=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&emr=1&ifkv=AWnogHdotb3y8eyFkdBg7idUHPBpZIevy96v5V0hNSxgCEBNwlKH1BZUnbq813tcmQeBH6oDQa9TSw&flowName=GlifWebSignIn&flowEntry=ServiceLogin&cid=1&navigationDirection=forward&TL=ALbfvL0HuW_B4nGeAGqhyQIRqIQiTReZUmqsiMbDNnpiRC2Oh4LkMsWB41Lps0Cx')
-
-# driver.implicitly_wait(1)  # 网页停顿1秒
-
-# text_box = driver.find_element(by=By.NAME, value="continue")
-# # submit_button = driver.find_element(by=By.CSS_SELECTOR, value="button")
-# text_box.send_keys(pswd)
-
-# # submit_button.click()
-
 
 import sys
 import time
@@ -111,7 +91,11 @@ def login():
     write_elem.click()
     cur_cookies = driver.get_cookies()[0]
     driver.save_screenshot('screenshot_writing_letter.png')  # 页面保存在 D:\03_program\python
-    time.sleep(1) # 登入后的页面保持2秒
+    
+
+    driver.implicitly_wait(5)
+
+    time.sleep(3)
 
     # 写入邮箱
     '''   
@@ -126,23 +110,45 @@ def login():
     '''
     rec_elem = driver.find_element(by=By.XPATH, value = '//input[@class="nui-editableAddr-ipt"]')
     rec_elem.send_keys(sent_addr) 
+    time.sleep(1)
+
+    '''
+    因为iframe的id是动态的，所以我们只能通过其他方法定位iframe，iframe的定位方法有：id，name，index等，这里我用name元素定位iframe
+    
+    '''
 
     # 写入主题
-    sub_elem = driver.find_element(by=By.XPATH, value = '//input[@class="nui-ipt-input"]')
-    # sub_elem = driver.find_elements(by=By.CSS_SELECTOR,value='body div div div div section header div div div div input')
+    # driver.switch_to.frame(0) 
+    # driver.switch_to.default_content()
+    
+    # # sub_elem = driver.find_element(by=By.XPATH, value = '//div[@class="bz0"]/div/input[@class="nui-ipt-input"]')
+    # sub_elem = driver.find_element(by=By.CLASS_NAME, value='nui-ipt-input')
+    sub_elem = driver.find_elements(by=By.CSS_SELECTOR,value='div div div div section header div input')
+    sub_elem.clear()
     sub_elem.send_keys(sent_topic) 
+    time.sleep(1)
 
     # 写入正文
-    driver.switch_to.frame(0) 
-    letter_elem = driver.find_element(by=By.NAME, value='body') # 有可能是 by=By.CSS_SELECTOR
+    iframe = driver.find_element(by=By.CLASS_NAME, value = 'APP-editor-iframe') 
+    driver.switch_to.frame(iframe) 
+    letter_elem = driver.find_element(by=By.XPATH, value='/html/body[@class="nui-scroll"]')   # 相比于上文 by=By.CLASS_NAME, value = 'APP-editor-iframe' 的级别往下数，所以使用单层'/'表示向下一层
+                                                                                              # ToDo: 试试主题也用这个方法，相对发件人的定位, 考虑是否需要 driver.switch_to.default_content(), 最终通过位置都能定位出来
+    
     letter_elem.clear()
     letter_elem.send_keys(letter_content)
 
     # 按下“发送”
     # 退出iframe, 切回主文档
     driver.switch_to.default_content()
-
-    send_elem = driver.find_element(by=By.XPATH, value = '//span[@class="nui-btn-text"]')
+    # 按钮使用CSS定位更方便，因为有重名问题
+    '''
+    填写收件人邮箱，我习惯用css选择器，其实我觉得思维不难，最难的是元素的定位！
+    163邮箱大量采用动态id，使得元素很难定位，我的做法是用css选择器，
+    编辑一个表达式，在Chrome中搜索目标元素，若是只搜索到1个，那这个表达式可以，
+    若是搜索到多个，则数清楚目标元素的次序，通过列表下标取到该元素。
+    '''
+    # 不用从’body'开始，从下一级'div'算起
+    send_elem = driver.find_elements(by=By.CSS_SELECTOR,value='div div div div footer div span')[0]
     send_elem.click()
     time.sleep(3)
 
