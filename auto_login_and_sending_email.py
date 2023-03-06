@@ -32,6 +32,7 @@ import json, requests, datetime
 import urllib3
 urllib3.disable_warnings() # 不安全请求警告：正在发出未验证的HTTPS请求。强烈建议添加证书验证。方法：去除urllib3 warming 警告---urllib3.disable_warnings() 
 
+
 def login(pswd, weather):
     # acount_num = input('请输入账号:\n')
     # passwd_str = input('请输入密码:\n')
@@ -192,12 +193,12 @@ def crawlingWeather():
 
 
 if __name__ == '__main__':
-    
-    now_weather = crawlingWeather()
-
+    # 爬取天气信息
+    now_weather = crawlingWeather()  
+    # 输入邮箱密码
     print ('Please input your password here: ')
     email_pswd = input()
-
+    # 
     if email_pswd:
         login(email_pswd, now_weather)
     else:
