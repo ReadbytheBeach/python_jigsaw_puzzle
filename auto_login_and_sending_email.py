@@ -28,7 +28,11 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By  # 书上没有的代码
 from selenium.webdriver.common.keys import Keys
 
-def login(pswd):
+import json, requests, datetime
+import urllib3
+urllib3.disable_warnings() # 不安全请求警告：正在发出未验证的HTTPS请求。强烈建议添加证书验证。方法：去除urllib3 warming 警告---urllib3.disable_warnings() 
+
+def login(pswd, weather):
     # acount_num = input('请输入账号:\n')
     # passwd_str = input('请输入密码:\n')
     options = webdriver.EdgeOptions()  # 可能会有问题
@@ -41,7 +45,9 @@ def login(pswd):
     user_pswd = pswd  #之后要用input方式来屏蔽掉
     sent_addr = 'jie.xun@continental-corporation.com'
     sent_topic = 'show me the topic'
-    letter_content = 'what amazing for using selenium, python! '
+
+    dt =datetime.datetime.now()
+    letter_content = str(dt.year)+'-'+str(dt.month)+'-'+str(dt.day) +' '+str(dt.hour)+':'+str(dt.minute)+':'+str(dt.second)+ "  Shanghai's weather:  " + weather['weather'][0]['main'] + '-' + weather['weather'][0]['description']
     
     # 163登陆框是使用iframe进行嵌套的，所以需要先切换到该iframe
     # HTML原代码： <iframe name="" frameborder="0" id="x-URS-iframe1677894621840.8105"......</iframe>
@@ -161,13 +167,39 @@ def login(pswd):
     time.sleep(1)
 
 
+def crawlingWeather():
+
+    # 公司电脑，sys.argv[] 都被屏蔽了
+    location = 'Shanghai'
+    appid = 'ae33f3ffc8acb9fcc9fab130793dba53'   # 30bits key in website
+    # Download the json data from OpenWeatherMap.org's API
+    # https://api.openweathermap.org/data/2.5/weather?q=Shanghai&appid=ae33f3ffc8acb9fcc9fab130793dba53  # try in the website, can work
+    # url = 'https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s' %(location,appid)
+    url = 'https://api.openweathermap.org/data/2.5/weather?q=Shanghai&appid=ae33f3ffc8acb9fcc9fab130793dba53'  # its a problem for company network， could use verify = False
+    response = requests.get(url,verify=False)  # 要设置verify参数为False,避免ssl认证。
+    response.raise_for_status() # 检查request是否有异常，如果没有异常，下载的文件将保存在response.txt中
+
+    # Uncomment to see the raw JSON text:
+    # print(response.text)
+
+    # Load json data into a Python variable.
+    weatherData = json.loads(response.text)
+    # print(weatherData) 
+    w = weatherData # 为了少打一些字
+    # print(type(w))
+    return w
+
+
 
 if __name__ == '__main__':
+    
+    now_weather = crawlingWeather()
+
     print ('Please input your password here: ')
     email_pswd = input()
 
     if email_pswd:
-        login(email_pswd)
+        login(email_pswd, now_weather)
     else:
         print('wrong password')
 
