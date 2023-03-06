@@ -47,7 +47,7 @@ def login(pswd, weather):
     sent_topic = 'show me the topic'
 
     dt =datetime.datetime.now()
-    letter_content = str(dt.year)+'-'+str(dt.month)+'-'+str(dt.day) +' '+str(dt.hour)+':'+str(dt.minute)+':'+str(dt.second)+ "  Shanghai's weather:  " + weather['weather'][0]['main'] + '-' + weather['weather'][0]['description']
+    letter_content = str(dt.year)+'-'+str(dt.month)+'-'+str(dt.day) +' '+str(dt.hour)+':'+str(dt.minute)+':'+str(dt.second)+ "   Shanghai's weather:  " + weather['weather'][0]['description']
     
     # 163登陆框是使用iframe进行嵌套的，所以需要先切换到该iframe
     # HTML原代码： <iframe name="" frameborder="0" id="x-URS-iframe1677894621840.8105"......</iframe>
