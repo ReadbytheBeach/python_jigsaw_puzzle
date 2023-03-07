@@ -9,3 +9,4 @@ while timeLeft > 0:
 
 # at the end of the countdown, play a sound file
 subprocess.Popen(['start', 'Ring04.wav'], shell=True)
+subprocess.Popen(['start', 'break_time.txt'], shell=True)
