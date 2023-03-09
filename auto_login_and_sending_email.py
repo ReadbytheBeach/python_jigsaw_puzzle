@@ -22,6 +22,14 @@
         # 在内容位置：
         # 发送：
 
+
+'''
+ToDo:
+写一个小程序，给几百个客户 自动发送 逢年过节的问候， 或新产品的消息
+读入一个excel, 将邮箱地址推入列表
+在发送页面，循环推送
+'''
+
 import sys
 import time
 from selenium import webdriver
@@ -48,8 +56,11 @@ def login(pswd, weather):
     sent_topic = 'show me the topic'
 
     dt =datetime.datetime.now()
-    letter_content = str(dt.year)+'-'+str(dt.month)+'-'+str(dt.day) +' '+str(dt.hour)+':'+str(dt.minute)+':'+str(dt.second)+ "   Shanghai's weather:  " + weather['weather'][0]['description']
-    
+    if weather['weather'][0]['description'] == 'light rain' or weather['weather'][0]['description'] =='moderate rain' :
+        letter_content = str(dt.year)+'-'+str(dt.month)+'-'+str(dt.day) +' '+str(dt.hour)+':'+str(dt.minute)+':'+str(dt.second)+ "   Shanghai's weather:  " + weather['weather'][0]['description'] + '\n\nYou need an umbrella !'
+    else:
+        letter_content = str(dt.year)+'-'+str(dt.month)+'-'+str(dt.day) +' '+str(dt.hour)+':'+str(dt.minute)+':'+str(dt.second)+ "   Shanghai's weather:  " + weather['weather'][0]['description']
+
     # 163登陆框是使用iframe进行嵌套的，所以需要先切换到该iframe
     # HTML原代码： <iframe name="" frameborder="0" id="x-URS-iframe1677894621840.8105"......</iframe>
     driver.switch_to.frame(0) 
