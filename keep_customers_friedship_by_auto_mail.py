@@ -55,7 +55,8 @@ for name, email_to in unsentCustomers.items():
         print('There was a problem sending emial to %s: %s' %(email_to, sendmailStatus))  # 说明这个客户的邮箱已经不存在了, 你懂的
 
 smtpObj.quit()
-print('all customer be sented.')
+print('mail has been sented to all customers.')
+
 
 
 
