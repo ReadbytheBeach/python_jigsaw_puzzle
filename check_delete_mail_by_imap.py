@@ -97,7 +97,7 @@ imapObj.select_folder('INBOX', readonly = False)# 选择文件夹中已读的邮
 
 
 # 3.2 搜索电子邮件--执行搜索
-UIDs = imapObj.search('SINCE "01-Mar-2023"') 
+UIDs = imapObj.search('SINCE "11-Mar-2023"') 
 print('邮件编号：', UIDs)
 # print(type(UIDs))
 
@@ -165,6 +165,8 @@ if delete == 'y':
     if destroy == 'y':
         print('mail-%s has been distoryed'%(delete_UIDs))
         imapObj.expunge()  #彻底删除
+
+imapObj.logout()
       
 
 
