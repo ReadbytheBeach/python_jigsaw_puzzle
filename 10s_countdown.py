@@ -1,8 +1,10 @@
 import time, subprocess
+import datetime
 
-timeLeft =10
 
-while timeLeft > 0:
+timeLeft = 10
+
+while int(timeLeft) > 0:
     print(timeLeft, end=' ')
     time.sleep(1)
     timeLeft = timeLeft - 1
