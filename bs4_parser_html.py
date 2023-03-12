@@ -1,3 +1,5 @@
+# 必须在VPN登录下，才能打开国外网站
+
 import requests, bs4
 import urllib3
 urllib3.disable_warnings() # 不安全请求警告：正在发出未验证的HTTPS请求。强烈建议添加证书验证。方法：去除urllib3 warming 警告---urllib3.disable_warnings() 
