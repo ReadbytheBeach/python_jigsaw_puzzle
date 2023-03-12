@@ -45,7 +45,7 @@ linkElems = soup.select('.package-snippet')                             #  <a cl
 # print(linkElems)
 
 # 每次最多打开五个页面
-numOpen = min(5, len(linkElems))
+numOpen = min(2, len(linkElems))
 for i in range(numOpen):
     urlToOpen = 'https://pypi.org/search/?q=' + linkElems[i].get('href')  # 打开文件的结构：https://pypi.org/search/?q=/project/requests/
     print('opening ', urlToOpen)

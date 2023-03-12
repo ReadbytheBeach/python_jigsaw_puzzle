@@ -66,9 +66,7 @@ for dir, sub_dir, filenames in os.walk(path):
             # 存入第i列中的每一行
             for i in range(len(line_content)):
                 sheet.cell(row=i+1, column= account).value = line_content[i] # row 从1开始
-     
-         
-
+    
 wb.save('txt_input.xlsx')
 
 
