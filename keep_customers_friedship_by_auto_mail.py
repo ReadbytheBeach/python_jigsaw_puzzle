@@ -45,7 +45,8 @@ smtpObj.login(email_from, pswd)
 
 # send out friendship emails
 for name, email_to in unsentCustomers.items():
-    body = "Subject: %s is coming, long time not see. \nDear %s, \nSeems we have sometime not seen each other. How are you these days? Hope to see you in the coming days. let's talk about your harvest and perceptions, see what vision for future."%(latestMonth,name)
+    # 主题和正文之间需要用空行分隔，这是SMTP的协议要求，即使用“Subject: XXX. \n\nDear, XXX”
+    body = "Subject: %s is coming, long time not see. \n\nDear %s, \n\n    Seems we have sometime not seen each other. How are you these days? \n\n    Hope to see you in the coming days. \n    Let's talk about your harvest and perceptions, and see what vision for future. \n\nBR,\nxj"%(latestMonth,name)
     print('sending email to %s...'%email_to)
 
     try:
