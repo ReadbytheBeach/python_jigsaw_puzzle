@@ -53,8 +53,8 @@ def login(pswd, weather):
     user_name = 'Heinekenblue@163.com'   #之后要用input方式来屏蔽掉
     user_pswd = pswd  #之后要用input方式来屏蔽掉
     sent_addr = 'jie.xun@continental-corporation.com'
-    sent_topic = 'show me the topic'
-
+    sent_topic = 'Today\'s weather'
+    
     dt =datetime.datetime.now()
     if weather['weather'][0]['description'] == 'light rain' or weather['weather'][0]['description'] =='moderate rain' :
         letter_content = str(dt.year)+'-'+str(dt.month)+'-'+str(dt.day) +' '+str(dt.hour)+':'+str(dt.minute)+':'+str(dt.second)+ "   Shanghai's weather:  " + weather['weather'][0]['description'] + '\n\nYou need an umbrella !'
