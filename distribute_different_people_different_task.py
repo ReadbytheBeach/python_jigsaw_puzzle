@@ -11,7 +11,7 @@ you need close the company VPN
 
 # 接收一个电子邮件的列表，
     # 获取人名和邮件名
-        wb = openpyxl.load_workbook('distribute_different people different task.xlsx')
+        wb = openpyxl.load_workbook('distribute_different_people_different_task.xlsx')
         sheet = wb.get_sheet_by_name('Sheet1')
         last_colmn = sheet.max_column
         # 名字 + 邮件是一个二维结构，用键-值对的字典是一个好的解决方案
@@ -65,7 +65,7 @@ while time_left > 0:
     # time.sleep(1)
     time_left = time_left -1
 
-wb = openpyxl.load_workbook('distribute_different people different task.xlsx')
+wb = openpyxl.load_workbook('distribute_different_people_different_task.xlsx')
 sheet = wb.get_sheet_by_name('Sheet1')
 last_colmn = sheet.max_column
 
